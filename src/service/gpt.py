@@ -1,7 +1,10 @@
 import os
 import openai as openai
 
+from src.service.cache_service import memoize_cache
 
+
+@memoize_cache
 def ask_gpt_for_response(messages, max_response_tokens=5, model="gpt-3.5-turbo"):
     openai.api_key = os.environ['OPENAI_API_KEY']
 
