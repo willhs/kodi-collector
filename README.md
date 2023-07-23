@@ -32,6 +32,8 @@ kodi-collector.sh <media-path>
 The media-path can be any number of paths to media files or directories containing media files.
 
 ## What does it do?
-1. Cleans media file names e.g. `The.Big.Bang.Theory.S01E01.720p.HDTV.x264-CTU.mkv` -> `The Big Bang Theory S01E01.mkv`
+1. Cleans media file names
+   1. movies: `The.Shining.1980.US.1080p.BluRay.H264.AAC.mvk` -> `The Shining (1980).mkv`
+   2. tv shows: `Inside_No._9_-_S02_-_E05_-_Nana's_Party.avi` -> `Inside No. 9 - S02E05 - Nana's Party.avi`
 2. Classifies your media as either movie or tv show
 3. Moves your media to the correct kodi library path
