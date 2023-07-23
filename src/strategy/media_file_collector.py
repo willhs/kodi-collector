@@ -1,32 +1,32 @@
 from src.model.media_type import MediaType
-from src.repo.file_repo import FileRepository
+from src.service.file_service import FileService
 from src.repo.media_repo import MediaRepository
-from src.service.intelligence import classify_media_file_name, rename_movie_filename, rename_tv_show_filename
+from src.service.intelligence import rename_movie_filename, rename_tv_show_filename, classify_media_file_name
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-class MediaFileTransformer:
+class MediaFileCollector:
     """
-    Transforms a media file into a Kodi item.
+    collects a media file into a Kodi item.
 
     A media file is either:
     - a movie file
     - a tv show file
     - a directory containing one or more of the above
 
-    Ideally this class can transform a raw dir tree of downloaded media
+    Ideally this class can collect a raw dir tree of downloaded media
     into a new dir tree of media ready to be added to Kodi.
     """
 
     def __init__(self,
-                 file_repo: FileRepository,
+                 file_service: FileService,
                  media_repo: MediaRepository):
-        self.file = file_repo
+        self.file = file_service
         self.media_repo = media_repo
 
-    def transform_media_file_to_kodi_item(self, media_path: str):
+    def collect_media_file(self, media_path: str):
         print(f"Processing {media_path}")
         # is_file = self.file.is_file(media_path)
 
@@ -34,18 +34,20 @@ class MediaFileTransformer:
         #     logging.error("Not a file")
         #     return
 
+        basename = self.file.basename(media_path)
+
         try:
-            # media_classification = classify_media_file_name(self.file.basename(media_path))
-            media_classification = MediaType.MOVIE
+            media_classification = classify_media_file_name(basename)
+            # media_classification = MediaType.MOVIE
         except Exception:
             logger.error(f"Unable to classify media file {media_path}")
             return
 
-        print(f"Classified as {media_classification}")
+        print(f"Classified as {media_classification.name}")
 
-        new_media_filename = rename_movie_filename(media_path) \
+        new_media_filename = rename_movie_filename(basename) \
             if media_classification == MediaType.MOVIE \
-            else rename_tv_show_filename(media_path)
+            else rename_tv_show_filename(basename)
 
         print(f"Cleaned name: {new_media_filename}")
 
@@ -53,7 +55,7 @@ class MediaFileTransformer:
         if media_classification == MediaType.MOVIE:
             self.media_repo.add_video_to_movies(media_path, new_media_filename)
         elif media_classification == MediaType.TV_SHOW:
-            self.media_repo.add_tv_show_dir_to_tv_shows(media_path, new_media_filename)
+            self.media_repo.add_video_to_tv_shows(media_path, new_media_filename)
 
     def get_dir_structure(self, root_dir):
         dir_structure = {}

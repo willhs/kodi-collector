@@ -1,8 +1,9 @@
 import os
 import shutil
+from pathlib import Path
 
 
-class FileRepository:
+class FileService:
     """
     Interface to interact with files using typical python standard lib operations.
     this is partly in order to make the code more testable.
@@ -30,6 +31,7 @@ class FileRepository:
         return os.path.join(*paths)
 
     def copy(self, src, dest):
+        Path(dest).parent.mkdir(parents=True, exist_ok=True)
         return shutil.copy(src, dest)
 
     def relpath(self, path, start):

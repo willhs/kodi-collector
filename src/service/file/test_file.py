@@ -1,6 +1,6 @@
 from typing import List
 
-from src.repo.file.abstract_file import FileService
+from src.service.file.abstract_file import FileService
 
 
 class File:

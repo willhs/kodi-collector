@@ -35,7 +35,7 @@ def classify_media_file_name(raw_file_name) -> MediaType:
         raise Exception(f"Unable to classify media file {raw_file_name}")
 
 
-def rename_movie_filename(name) -> string:
+def rename_movie_filename(filename) -> string:
     gpt_system_prompt = textwrap.dedent("""
         You are a smart filename parser for Kodi media player, specializing in movie files. 
         Your task is to clean up raw filenames into a preferred format: "Movie Name (Year)". 
@@ -50,7 +50,7 @@ def rename_movie_filename(name) -> string:
         In all cases, ensure the title is as accurate and well-formatted as possible.
     """)
 
-    raw_file_name = os.path.splitext(name)[0]
+    raw_file_name, file_extension = os.path.splitext(filename)
 
     messages = [
         {"role": "system", "content": gpt_system_prompt},
@@ -64,7 +64,6 @@ def rename_movie_filename(name) -> string:
     new_name = ask_gpt_for_response(messages, 20)
     cleaned_new_name = clean_filename(new_name)
 
-    file_extension = os.path.splitext(name)[1]
     return f"{cleaned_new_name}{file_extension}"
 
 

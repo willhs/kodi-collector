@@ -1,6 +1,7 @@
 import unittest
 from parameterized import parameterized
-from src.model.media import MediaType
+
+from src.model.media_type import MediaType
 from src.service.intelligence import classify_media_file_name, rename_movie_filename, rename_tv_show_filename
 
 

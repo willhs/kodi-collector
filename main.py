@@ -1,20 +1,19 @@
-import os
 import argparse
 from dotenv import load_dotenv
 
-from src.repo.file_repo import FileRepository
+from src.service.file_service import FileService
 from src.repo.media_repo import MediaRepository
-from src.strategy.media_file_transformer import MediaFileTransformer
+from src.strategy.media_file_collector import MediaFileCollector
 
 
 def collect_media(media_path):
-    file_repo = FileRepository()
-    transformer = MediaFileTransformer(
-        file_repo=file_repo,
-        media_repo=MediaRepository(file_repo)
+    file_service = FileService()
+    collector = MediaFileCollector(
+        file_service=file_service,
+        media_repo=MediaRepository(file_service)
     )
 
-    transformer.transform_media_file_to_kodi_item(media_path)
+    collector.collect_media_file(media_path)
 
 
 if __name__ == "__main__":

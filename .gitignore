@@ -3,3 +3,4 @@ res
 .env
 .diskcache
 */**/__pycache__
+venv
