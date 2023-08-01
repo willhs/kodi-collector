@@ -39,3 +39,12 @@ class FileService:
 
     def walk(self, path):
         return os.walk(path)
+
+    def list_dir(self, path):
+        return os.listdir(path)
+
+    def splitext(self, path):
+        return os.path.splitext(path)
+
+    def dirname(self, path):
+        return os.path.dirname(path)

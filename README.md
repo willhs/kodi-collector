@@ -37,3 +37,5 @@ The media-path can be any number of paths to media files or directories containi
    2. tv shows: `Inside_No._9_-_S02_-_E05_-_Nana's_Party.avi` -> `Inside No. 9 - S02E05 - Nana's Party.avi`
 2. Classifies your media as either movie or tv show
 3. Moves your media to the correct kodi library path
+   1. movies: `The Shining (1980).mkv` -> `Kodi Media Library/Movies/The Shining (1980).mkv`
+   2. tv shows: `Inside_No._9_-_S02_-_E05_-_Nana's_Party.avi` -> `Kodi Media Library/TV Shows/Inside No. 9/Season 1/Inside No. 9 - S02E05 - Nana's Party.avi`

@@ -11,11 +11,6 @@ def make_path_for_movie(movies_library_dir, video_name, file_service):
 
 def make_path_for_tv_show(tv_shows_library_dir, video_name, file_service):
     try:
-        # the tv show name should contain 3 components
-        # - the tv show name
-        # - the season number
-        # - the episode number
-
         # Create a regular expression pattern that matches formats like:
         # "The Simpsons S01E01.avi", "Fargo.S04E01.1080p.WEB.H264-VIDEOHOLE.mkv",
         # "Better Call Saul S05E01 Magic Man.mkv", "Inside No. 9 - S02 - E05 - Nana's Party.avi"
@@ -31,11 +26,13 @@ def make_path_for_tv_show(tv_shows_library_dir, video_name, file_service):
             # The season number is the second group in the match
             season_number = int(match.group(2))
         else:
-            raise ValueError(f"Unable to parse tv show name and season number from video name: {video_name}")
+            logger.warning(f"Unable to parse season number from video name: {video_name}. Assuming Season 1.")
+            tv_show_name = video_name
+            season_number = 1
 
         return file_service.join(tv_shows_library_dir, tv_show_name, f"Season {season_number}", video_name)
 
     except Exception as e:
-        logger.error(f"Unable to parse tv show name and season number from {video_name}")
+        logger.error(f"Error when trying to parse tv show name and season number from {video_name}")
         logger.error(f"Error: {e}")
         return
