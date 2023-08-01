@@ -1,5 +1,5 @@
 from src.model.media_type import MediaType
-from src.service.file_service import FileService
+from src.service.file.file_service import FileService
 from src.repo.media_repo import MediaRepository
 from src.service.intelligence import rename_movie_filename, rename_tv_show_filename, classify_media_file_name
 

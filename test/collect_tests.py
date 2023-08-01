@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 from parameterized import parameterized
 from src.repo.media_repo import MediaRepository
-from src.service.file_service import FileService
+from src.service.file.file_service import FileService
 from src.strategy.media_file_collector import MediaFileCollector
 
 MOVIES_PATH = "/movies"

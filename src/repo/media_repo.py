@@ -1,7 +1,7 @@
 import os
 import logging
 
-from src.service.file_service import FileService
+from src.service.file.file_service import FileService
 from src.service.parse_service import make_path_for_tv_show, make_path_for_movie
 
 logger = logging.getLogger(__name__)

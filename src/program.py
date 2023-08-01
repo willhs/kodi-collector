@@ -2,8 +2,8 @@ import argparse
 
 from dotenv import load_dotenv
 
-from src.service.file_service import FileService
 from src.repo.media_repo import MediaRepository
+from src.service.file.file_service import FileService
 from src.strategy.media_file_collector import MediaFileCollector
 
 
