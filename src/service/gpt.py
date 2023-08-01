@@ -21,3 +21,4 @@ def ask_gpt_for_response(messages, max_response_tokens=5, model="gpt-3.5-turbo")
     # trim string
     trimmed_response = response_text.strip()
     return trimmed_response
+

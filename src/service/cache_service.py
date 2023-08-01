@@ -6,11 +6,12 @@ import diskcache
 
 CACHE_DIR = '.diskcache'
 
-if os.access(CACHE_DIR, os.W_OK):
-    cache = diskcache.Cache(CACHE_DIR)
-    use_cache = True
-else:
-    use_cache = False
+# if os.access(CACHE_DIR, os.W_OK):
+cache = diskcache.Cache(CACHE_DIR)
+use_cache = True
+# use_cache = False
+# else:
+#     use_cache = False
 
 
 def memoize_cache(f: Callable):

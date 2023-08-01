@@ -1,8 +1,7 @@
 import os
 import logging
-import re
 
-from src.service.file_service import FileService
+from src.service.file.file_service import FileService
 from src.service.parse_service import make_path_for_tv_show, make_path_for_movie
 
 logger = logging.getLogger(__name__)
@@ -22,7 +21,7 @@ class MediaRepository:
             print(f"Skipping: {video_name} already exists in movies library")
             return
 
-        print(f'Writing to {new_path}')
+        print(f'Writing to\t{new_path}')
         self.file_service.copy(original_media_path, new_path)
 
     def add_video_to_tv_shows(self, original_media_path: str, video_name: str):
@@ -32,7 +31,7 @@ class MediaRepository:
             print(f"Skipping: {video_name} already exists in tv shows library")
             return
 
-        print(f'Writing to {new_path}')
+        print(f'Writing to\t{new_path}')
         self.file_service.copy(original_media_path, new_path)
 
     # def add_tv_show_dir_to_tv_shows(self, original_media_path: str, tv_show_dir: str):
