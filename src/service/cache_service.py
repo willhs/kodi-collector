@@ -4,7 +4,7 @@ from typing import Callable
 
 import diskcache
 
-CACHE_DIR = '.diskcache'
+CACHE_DIR = '$HOME/.kodi-collector-cache'
 
 # if os.access(CACHE_DIR, os.W_OK):
 cache = diskcache.Cache(CACHE_DIR)
