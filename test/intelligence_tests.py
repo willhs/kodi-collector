@@ -2,27 +2,38 @@ import unittest
 from parameterized import parameterized
 
 from src.model.media_type import MediaType
-from src.service.intelligence import classify_media_file_name, rename_movie_filename, rename_tv_show_filename
+from src.service.intelligence import classify_media_file, rename_movie_filename, rename_tv_show_filename
 
 
 class IntelligenceTests(unittest.TestCase):
     @parameterized.expand([
-        ("Up (2009) [1080p]", MediaType.MOVIE),
-        ("The.Insider.1999.1080p.BluRay.x265-RARBG", MediaType.MOVIE),
-        ("Fargo.S04E01.1080p.WEB.H264-VIDEOHOLE", MediaType.TV_SHOW),
-        ("Mr Robot Season 3 1080p skunktastic", MediaType.TV_SHOW),
-        ("The Simpsons S01E01.avi", MediaType.TV_SHOW),
-        ("Big (1988)", MediaType.MOVIE),
-        ("The.Shining.1980.US.1080p.BluRay.H264.AAC-RARBG", MediaType.MOVIE),
-        ("Under_California_Stars.avi", MediaType.MOVIE),
-        ("The Wire Season 1", MediaType.TV_SHOW),
-        ("Charlie_Chaplin_The_Knockout.avi", MediaType.MOVIE),
-        ("011836DVD Alpine Antics LT.avi", MediaType.MOVIE),
+        # single file
+        "The.Insider.1999.1080p.BluRay.x265-RARBG.mkv",
+        "The.Shining.1980.US.1080p.BluRay.H264.AAC-RARBG",
+        "Big (1988)",
+        "Charlie_Chaplin_The_Knockout.avi",
+        "011836DVD Alpine Antics LT.avi",
+        # in a dir
+        "Up (2009) [1080p]/Up (2009) [1080p].avi",
+        # movie collection
+        "Star Wars Movie Collection (1977-2019)/Star Wars M01-M03 [Bluray] (1977-1983)/Star Wars M01 E04 A New Hope [BluRay] (1977 360p re-blurip).mp4"
     ])
-    def test_classify_media_file_name(self, filename, expected_classification):
-        classification = classify_media_file_name(filename)
+    def test_classify_media_file_name_movies(self, filename):
+        classification = classify_media_file(filename)
+        self.assertEqual(MediaType.MOVIE, classification)
 
-        self.assertEqual(expected_classification, classification)
+    @parameterized.expand([
+        # single file
+        "Silicon Valley S01E01.avi",
+        # in full dir structure
+        "Louis Theroux/S2-When Louis Met/WLM S02E04 - Max Clifford.avi",
+        "Louis Theroux/S3/African Hunting Party.avi",
+        "Fargo.1080p.WEB.H264-VIDEOHOLE/Season 4/Fargo.S04E01.1080p.WEB.H264-VIDEOHOLE.mkv",
+        "The Simpsons/Season 1/The Simpsons S01E01.avi",
+    ])
+    def test_classify_media_file_name_tv_shows(self, filename):
+        classification = classify_media_file(filename)
+        self.assertEqual(MediaType.TV_SHOW, classification)
 
     @parameterized.expand([
         ("Up (2009) [1080p].mkv", "Up (2009).mkv"),

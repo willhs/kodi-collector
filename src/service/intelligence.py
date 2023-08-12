@@ -7,30 +7,29 @@ from src.service.filename_cleaner import clean_filename
 from src.service.gpt import ask_gpt_for_response
 
 
-def classify_media_file_name(filename, parent_directory) -> MediaType:
+def classify_media_file(path) -> MediaType:
     gpt_system_prompt = textwrap.dedent("""
-    You are a smart classifier of downloaded media files for Kodi media player which matches files with the www.themoviedb.org's movie / tv show classifications.
-    Your task is to classify each given filename (with its parent directory name as context) as either a tv show ("tv show") or a movie ("movie"). 
-    Lean on your knowledge of media when possible as the file and parent directory naming can be inconsistent.
+    You are a smart classifier of downloaded media files for Kodi media player which matches files with the www.themoviedb.org's movie or tv show classifications.
+    Your task is to classify each given file (path) as either a tv show ("tv show") or a movie ("movie"). 
+    Lean on your knowledge of media when possible.
+    For example, a file like "The Matrix/The.Matrix.1999.1080p.BrRip.x264.mp4" should be classified as a "movie", while a file like "Game.of.Thrones.720p.HDTV.x264/Season 1/Game.of.Thrones.S01E01.720p.HDTV.x264.mp4".
     If in doubt given your knowledge of media: if it looks to be episodic, classify it as a tv show, otherwise if it is a singular work classify it as a movie.
     A documentary is considered a movie unless its episodic then its a tv show.
 
-    For example, a filename like "The.Matrix.1999.1080p.BrRip.x264.mp4" with parent directory "The Matrix" should be classified as a "movie", while a filename like "Game.of.Thrones.S01E01.720p.HDTV.x264.mp4" in parent directory "Season 1" should be classified as a "tv show".
-
-    Given the filename, parent directory and your knowledge of media, please classify it as either a "tv show" or a "movie".
     """)
+    # Given the filename, parent directory and your knowledge of media, please classify it as either a "tv show" or a "movie".
 
     messages = [
         {"role": "system", "content": f"{gpt_system_prompt}"},
-        {"role": "user", "content": 'filename: Madagascar.DVDRip.XviD-DoNE.avi, parent directory: Madagascar'},
+        {"role": "user", "content": 'Madagascar.DVDRip.XviD-DoNE/Madagascar.DVDRip.XviD-DoNE.avi'},
         {"role": "assistant", "content": 'movie'},
-        {"role": "user", "content": 'filename: The_Simpsons_S01E01.avi, parent directory: Season 1'},
+        {"role": "user", "content": 'The_Simpsons/Season 1/The_Simpsons_S01E01.avi'},
         {"role": "assistant", "content": 'tv show'},
-        {"role": "user", "content": 'filename: Baseball - Inning 06_-_1991_-_Ken Burns.mp4, parent directory: (1994) Baseball'},
+        {"role": "user", "content": '(1994) Baseball/Baseball_-_Inning 06_-_1991_-_Ken_Burns.mp4'},
         {"role": "assistant", "content": 'tv show'},
-        {"role": "user", "content": 'filename: Wallace and Gromit in A Grand Day Out.avi, parent directory: Wallace and Gromit Film Collection'},
+        {"role": "user", "content": 'Wallace and Gromit Film Collection/Wallace and Gromit in A Grand Day Out.avi'},
         {"role": "assistant", "content": 'movie'},
-        {"role": "user", "content": f'filename: {filename}, parent directory: {parent_directory}'},
+        {"role": "user", "content": f'{path}'},
     ]
 
     gpt_response = ask_gpt_for_response(
@@ -44,7 +43,7 @@ def classify_media_file_name(filename, parent_directory) -> MediaType:
     elif "movie" in gpt_response.lower():
         return MediaType.MOVIE
     else:
-        raise Exception(f"GPT couldn't classify {filename} ({gpt_response})")
+        raise Exception(f"GPT couldn't classify {path})")
 
 
 def rename_movie_filename(filename, parent_directory) -> string:

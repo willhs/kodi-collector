@@ -1,7 +1,7 @@
 from src.model.media_type import MediaType
 from src.service.file.file_service import FileService
 from src.repo.media_repo import MediaRepository
-from src.service.intelligence import rename_movie_filename, rename_tv_show_filename, classify_media_file_name
+from src.service.intelligence import rename_movie_filename, rename_tv_show_filename, classify_media_file
 
 import logging
 
@@ -47,7 +47,7 @@ class MediaFileCollector:
         parent_dir = self.file_service.basename(self.file_service.dirname(media_path))
 
         try:
-            media_classification = classify_media_file_name(basename, parent_dir)
+            media_classification = classify_media_file(media_path)
             # media_classification = MediaType.MOVIE
         except Exception as e:
             logger.error(f"Unable to classify media file {media_path} because of\n{str(e)}")
