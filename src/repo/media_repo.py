@@ -34,15 +34,6 @@ class MediaRepository:
         print(f'Writing to\t{new_path}')
         self.file_service.copy(original_media_path, new_path)
 
-    # def add_tv_show_dir_to_tv_shows(self, original_media_path: str, tv_show_dir: str):
-    #     new_path = self.file_service.join(self.tv_shows_path, tv_show_dir)
-    #
-    #     if self.does_tv_show_exist(new_path):
-    #         print(f"Skipping: {tv_show_dir} already exists in tv shows dir")
-    #         return
-    #
-    #     self.file_service.copy(original_media_path, new_path)
-
     def does_movie_exist(self, movie_file_name: str):
         # check if a file/directory already exists
         path = self.file_service.join(self.movies_path, movie_file_name)

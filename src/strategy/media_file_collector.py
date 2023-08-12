@@ -1,13 +1,13 @@
 from src.model.media_type import MediaType
 from src.service.file.file_service import FileService
 from src.repo.media_repo import MediaRepository
-from src.service.intelligence import rename_movie_filename, rename_tv_show_filename, classify_media_file
+from src.service.intelligence import rename_movie_file, rename_tv_show_filename, classify_media_file
 
 import logging
 
 logger = logging.getLogger(__name__)
 
-supported_video_extensions = [".mkv", ".avi", ".mp4", ".m4v", ".mpg"]
+video_file_extensions = [".mkv", ".avi", ".mp4", ".m4v", ".mpg", ".ogg", ".wmv", ".mov", ".flv", ".webm", ".vob"]
 
 
 class MediaFileCollector:
@@ -43,21 +43,20 @@ class MediaFileCollector:
             logging.error(f"Path {media_path} is not a video file")
             return
 
-        basename = self.file_service.basename(media_path)
-        parent_dir = self.file_service.basename(self.file_service.dirname(media_path))
+        # basename = self.file_service.basename(media_path)
+        # parent_dir = self.file_service.basename(self.file_service.dirname(media_path))
 
         try:
             media_classification = classify_media_file(media_path)
-            # media_classification = MediaType.MOVIE
         except Exception as e:
             logger.error(f"Unable to classify media file {media_path} because of\n{str(e)}")
             return
 
         print(f"Classified as\t{media_classification.name}")
 
-        new_media_filename = rename_movie_filename(basename, parent_dir) \
+        new_media_filename = rename_movie_file(media_path) \
             if media_classification == MediaType.MOVIE \
-            else rename_tv_show_filename(basename, parent_dir)
+            else rename_tv_show_filename(media_path)
 
         print(f"Cleaned:\t{new_media_filename}")
 
@@ -85,4 +84,4 @@ class MediaFileCollector:
         Check if a file is a video file
         """
         _, file_extension = self.file_service.splitext(filename)
-        return file_extension in supported_video_extensions
+        return file_extension in video_file_extensions
